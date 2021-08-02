@@ -1,6 +1,6 @@
 <div class="col-md-3">
   <h2>User info</h2>
-  <%= attachment_image_tag user, :profile_image, :fill,100, 100, format: "jpeg", fallback: "no_image.jpg" %>
+  <%= attachment_image_tag user, :profile_image, format: "jpeg", fallback: "no_image.jpg", size: "100x100" %>
     <table class="table">
       <tbody>
         <tr>
@@ -12,11 +12,23 @@
           <th>introduction</th>
           <th><%= user.introduction %></th>
         </tr>
+        <tr>
+          <th>follows</th>
+          <th><%= link_to user.followings.count, user_followings_path(user.id) %></th>
+        </tr>
+        <tr>
+          <th>followers</th>
+          <th><%= link_to user.followers.count, user_followers_path(user.id) %></th>
+        </tr>
       </tbody>
     </table>
 
   <div class="row">
-    <%= link_to "", edit_user_path(user.id), class: "btn btn-outline-secondary btn-block fas fa-user-cog" %>
+    <% if user != current_user %>
+      <%= render "relationships/info", user: user %>
+    <% else %>
+      <%= link_to "", edit_user_path(user.id), class: "btn btn-outline-secondary btn-block fas fa-user-cog" %>
+    <% end %>
   </dev>
 
   <h2 class="mt-3">New book</h2>

@@ -4,7 +4,7 @@
     <div class="row">
       <%= render "users/list", book: @book, user: current_user %>
     </div>
-    
+
     <div class="col-md-8 offset-md-1">
       <h2>Users</h2>
         <table class="table">
@@ -12,7 +12,7 @@
             <tr>
               <th>image</th>
               <th>name</th>
-              <th colspan="3"></th>
+              <th colspan="4"></th>
             </tr>
           </thead>
           <% @users.each do |user| %>
@@ -25,11 +25,28 @@
                 <%= user.name %>
               </td>
               <td>
+                フォロー数: <%= user.followings.count %>
+              </td>
+              <td>
+                フォロワー数: <%= user.followers.count %>
+              </td>
+              <% if user != current_user %>
+                <td>
+                  <% if current_user.following?(user) %>
+                    <%= link_to "フォロー外す", user_relationships_path(user.id), method: :delete %>
+                  <% else %>
+                    <%= link_to "フォローする", user_relationships_path(user.id), method: :post %>
+                  <% end %>
+                </td>
+              <% else %>
+                <td></td>
+              <% end %>
+              <td>
                 <%= link_to "Show", user_path(user.id) %>
               </td>
             </tr>
           </tbody>
-          <% end %> 
+          <% end %>
         </table>
     </div>
   </div>
